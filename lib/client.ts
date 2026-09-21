@@ -1,0 +1,2 @@
+export async function request<T=any>(url:string,init?:RequestInit):Promise<T>{const r=await fetch(url,init);let body:any;try{body=await r.json();}catch{throw new Error('Sunucudan geçerli yanıt alınamadı.');}if(!r.ok)throw new Error(body?.error??'İşlem tamamlanamadı.');return body as T;}
+export const jsonBody=(data:unknown)=>({headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});

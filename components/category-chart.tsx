@@ -1,0 +1,5 @@
+'use client';
+import {ResponsiveContainer,BarChart,Bar,XAxis,YAxis,Tooltip,Cell} from 'recharts';
+import {CATEGORIES} from '@/lib/constants';
+import {Empty} from './city-ui';
+export default function CategoryChart({data}:{data:{name:string;value:number}[]}){if(!(data?.length))return <Empty title="Henüz başvuru verisi yok" description="Başvurular geldikçe kategori dağılımı burada oluşacak."/>;return <div className="h-[235px] w-full"><ResponsiveContainer width="100%" height="100%"><BarChart data={data?.map((d)=>({...d,name:CATEGORIES[d.name]??d.name}))} margin={{top:15,bottom:10,left:-25,right:5}}><XAxis dataKey="name" tickLine={false} axisLine={false} tick={{fontSize:10}} interval={0}/><YAxis allowDecimals={false} tickLine={false} axisLine={false} tick={{fontSize:10}}/><Tooltip contentStyle={{fontSize:11,borderRadius:8}} cursor={{fill:'hsl(var(--muted))'}}/><Bar dataKey="value" name="Başvuru" radius={[5,5,0,0]} maxBarSize={38}>{data?.map((d,i)=><Cell key={d.name} fill={`hsl(var(--chart-${i%5+1}))`}/>)}</Bar></BarChart></ResponsiveContainer></div>;}

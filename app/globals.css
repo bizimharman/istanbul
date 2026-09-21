@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+ :root {--background:216 30% 97%;--foreground:216 40% 19%;--card:0 0% 100%;--card-foreground:216 40% 19%;--popover:0 0% 100%;--popover-foreground:216 40% 19%;--primary:191 92% 36%;--primary-foreground:0 0% 10%;--secondary:215 58% 23%;--secondary-foreground:0 0% 100%;--muted:215 30% 95%;--muted-foreground:216 13% 43%;--accent:189 60% 94%;--accent-foreground:191 92% 29%;--destructive:0 68% 48%;--destructive-foreground:0 0% 100%;--border:216 23% 90%;--input:215 25% 86%;--ring:191 92% 36%;--chart-1:191 92% 36%;--chart-2:215 58% 35%;--chart-3:33 94% 44%;--chart-4:161 53% 40%;--chart-5:253 47% 64%;--radius:.625rem;--shadow-sm:0 2px 8px hsl(215 40% 20% / .03);--shadow-md:0 8px 24px hsl(215 40% 20% / .07);--shadow-lg:0 15px 40px hsl(215 40% 20% / .1);--duration-fast:150ms;--duration-normal:250ms;--duration-slow:350ms;}
+ *{@apply border-border;} body{@apply bg-background text-foreground antialiased;} h1,h2,h3{@apply font-display;} button,a,input,select,textarea{-webkit-tap-highlight-color:transparent;} button,a,input,select,textarea:focus-visible{outline-offset:3px;} :focus-visible{outline:2px solid hsl(var(--primary));} input,select,textarea{@apply w-full rounded-lg border border-input bg-card px-3 py-2.5 text-sm text-foreground transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15;} select{min-height:43px;} label{@apply text-sm font-medium;} button:disabled{@apply cursor-not-allowed opacity-60;} ::selection{@apply bg-primary/20;}
+}
+@layer components {
+ .panel{@apply rounded-xl bg-card shadow-sm;}
+ .btn{@apply inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:brightness-110 disabled:opacity-60;}
+ .btn-light{@apply inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-muted px-4 py-2.5 text-sm font-medium text-foreground transition hover:bg-accent hover:text-accent-foreground;}
+ .section-title{@apply text-lg font-bold tracking-tight;}
+ .eyebrow{@apply text-[10px] font-semibold uppercase tracking-[.16em];}
+ .field{@apply flex flex-col gap-2;}
+ .page-title{@apply text-2xl font-bold tracking-tight md:text-[28px];}
+ .status{@apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium whitespace-nowrap;}
+ .status-OPEN{@apply bg-primary/10 text-primary;}.status-IN_PROGRESS{@apply bg-chart-3/10 text-chart-3;}.status-RESOLVED{@apply bg-chart-4/10 text-chart-4;}.status-REJECTED{@apply bg-destructive/10 text-destructive;}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}

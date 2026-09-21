@@ -1,0 +1,5 @@
+import {NextResponse} from 'next/server';
+import {prisma} from '@/lib/db';
+import {currentUser,apiError,unauthorized} from '@/lib/server';
+export const dynamic='force-dynamic';
+export async function GET(){try{const u=await currentUser();if(!u)return unauthorized();const where=u.role==='MUNICIPAL_ADMIN'?{}:{userId:u.id};const [total,open,progress,resolved,categories,recent]=await Promise.all([prisma.ticket.count({where}),prisma.ticket.count({where:{...where,status:'OPEN'}}),prisma.ticket.count({where:{...where,status:'IN_PROGRESS'}}),prisma.ticket.count({where:{...where,status:'RESOLVED'}}),prisma.ticket.groupBy({by:['category'],where,_count:{_all:true}}),prisma.ticket.findMany({where,select:{id:true,title:true,category:true,district:true,status:true,createdAt:true},orderBy:{createdAt:'desc'},take:4})]);return NextResponse.json({total,open,progress,resolved,rate:total?Math.round(resolved/total*100):0,categories:categories.map((c)=>({name:c.category,value:c._count._all})),recent});}catch(e){return apiError(e);}}

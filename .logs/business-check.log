@@ -1,0 +1,17 @@
+GEÇTİ: Oturum ve belediye/platform yetkisi ayrımı
+GEÇTİ: Kayıttan yönetici yetkisi alınamıyor
+GEÇTİ: Alan doğrulama, zararlı URL ve farklı kaynak kontrolü
+GEÇTİ: Onaysız profil açık API ve site haritasından gizli
+GEÇTİ: Mükerrer kayıt ve başka işletmenin kaydına erişim engeli
+GEÇTİ: Yayın onayı ayrı yetki ve kontrol beyanı istiyor
+GEÇTİ: Üç tur eşzamanlı onay: tek onay ve tek işlem kaydı
+GEÇTİ: Açık profil HTML/JSON-LD, özel veri ayrımı ve içerik enjeksiyonu kontrolü
+GEÇTİ: Ad, kategori ve hizmet bölgesi filtreleri
+GEÇTİ: Bölümlü site haritası, robots ve filtre noindex çıktıları
+GEÇTİ: Düzenlemede tekrar inceleme, sabit profil adresi ve eski sürüm engeli
+GEÇTİ: Düzeltme, yeniden gönderim, yayın durdurma ve kontrollü açma
+GEÇTİ: İnceleyici kendi işletmesini onaylayamıyor
+GEÇTİ: Hesap başına kayıt kotası
+GEÇTİ: Günlük işlem sınırı okumayı engellemiyor
+SONUÇ: 15 hedefli kontrol grubu geçti. Yapay zekâ çağrısı yapılmadı.
+Yalnızca bu çalışmanın geçici hesap ve işletmeleri temizlendi.

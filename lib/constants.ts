@@ -1,0 +1,6 @@
+export const DISTRICTS = ['Adalar','Arnavutköy','Ataşehir','Avcılar','Bağcılar','Bahçelievler','Bakırköy','Başakşehir','Bayrampaşa','Beşiktaş','Beykoz','Beylikdüzü','Beyoğlu','Büyükçekmece','Çatalca','Çekmeköy','Esenler','Esenyurt','Eyüpsultan','Fatih','Gaziosmanpaşa','Güngören','Kadıköy','Kağıthane','Kartal','Küçükçekmece','Maltepe','Pendik','Sancaktepe','Sarıyer','Silivri','Sultanbeyli','Sultangazi','Şile','Şişli','Tuzla','Ümraniye','Üsküdar','Zeytinburnu'];
+export const CATEGORIES: Record<string,string> = {INFRASTRUCTURE:'Altyapı',TRANSPORT:'Ulaşım',CLEANING:'Temizlik',PARKS:'Park ve yeşil alan',OTHER:'Diğer'};
+export const STATUSES: Record<string,string> = {OPEN:'Alındı',IN_PROGRESS:'İşlemde',RESOLVED:'Çözüldü',REJECTED:'Reddedildi'};
+export const TYPES: Record<string,string> = {WATER_OUTAGE:'Su kesintisi',ELECTRICITY_OUTAGE:'Elektrik kesintisi',ROAD_WORK:'Yol çalışması',EVENT:'Etkinlik',GENERAL:'Genel duyuru'};
+export const ROLES: Record<string,string> = {CITIZEN:'Vatandaş',MUNICIPAL_ADMIN:'Belediye yöneticisi',BUSINESS:'İşletme',TOURIST:'Ziyaretçi'};
+export const HERO = 'https://ucarecdn.com/1108deed-5803-4bbd-b282-a623d04bed68/-/format/webp/-/quality/lighter/-/resize/1900x/';

@@ -1,0 +1,7 @@
+PASS: Eşzamanlı 5 istekte yalnız 3 kabul; reddedilenler diğer sayacı tüketmiyor.
+PASS: Günlük sınır ve işlem geri alma koruması.
+PASS: Süresi dolan sayaç temizleniyor; yeni dönem başvuruyu kabul ediyor.
+PASS: Gerçek API: oturumsuz 401, geçersiz veri 400, sınırda 429 ve bekleme süresi; listeleme açık.
+PASS: 3 tur: eşzamanlı güncellemelerde 200/409, tek geçmiş kaydı; güncel sürümle çözüm başarılı.
+PASS: Vatandaşın yönetici yazma yetkisi yok; eski sürüm ve geçersiz durum geçişleri reddediliyor.
+PASS: Bu çalıştırmaya ait geçici test verileri temizlendi.

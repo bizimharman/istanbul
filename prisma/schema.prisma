@@ -1,0 +1,286 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/istanbul_smart_city/nextjs_space/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum Role {
+ CITIZEN
+ MUNICIPAL_ADMIN
+ BUSINESS
+ TOURIST
+}
+enum Category {
+ INFRASTRUCTURE
+ TRANSPORT
+ CLEANING
+ PARKS
+ OTHER
+}
+enum TicketStatus {
+ OPEN
+ IN_PROGRESS
+ RESOLVED
+ REJECTED
+}
+enum AnnouncementType {
+ WATER_OUTAGE
+ ELECTRICITY_OUTAGE
+ ROAD_WORK
+ EVENT
+ GENERAL
+}
+model User {
+ id String @id @default(uuid())
+ name String
+ email String @unique
+ emailVerified DateTime?
+ image String?
+ passwordHash String
+ role Role @default(CITIZEN)
+ isPlatformAdmin Boolean @default(false)
+ district String @default("Kadıköy")
+ preferredLanguage String @default("tr")
+ lat Float?
+ lng Float?
+ createdAt DateTime @default(now())
+ tickets Ticket[]
+ announcements Announcement[]
+ businesses Business[]
+ serviceRequests ServiceRequest[]
+ uploads Upload[]
+ accounts Account[]
+ sessions Session[]
+}
+model Account {
+ id String @id @default(cuid())
+ userId String
+ type String
+ provider String
+ providerAccountId String
+ refresh_token String?
+ access_token String?
+ expires_at Int?
+ token_type String?
+ scope String?
+ id_token String?
+ session_state String?
+ user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ @@unique([provider, providerAccountId])
+}
+model Session {
+ id String @id @default(cuid())
+ sessionToken String @unique
+ userId String
+ expires DateTime
+ user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+model VerificationToken {
+ identifier String
+ token String @unique
+ expires DateTime
+ @@unique([identifier, token])
+}
+model Ticket {
+ id String @id @default(uuid())
+ userId String
+ user User @relation(fields: [userId], references: [id])
+ title String
+ description String
+ district String
+ neighborhood String?
+ lat Float?
+ lng Float?
+ selectedCategory Category
+ category Category
+ assignedDepartment String
+ status TicketStatus @default(OPEN)
+ aiConfidenceScore Float
+ adminResponse String?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ uploads Upload[]
+ events TicketEvent[]
+ @@index([userId, createdAt])
+ @@index([status, district, category])
+}
+model TicketEvent {
+ id String @id @default(uuid())
+ ticketId String
+ ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+ status TicketStatus
+ message String
+ createdAt DateTime @default(now())
+}
+model Upload {
+ id String @id @default(uuid())
+ userId String
+ user User @relation(fields: [userId], references: [id])
+ ticketId String?
+ ticket Ticket? @relation(fields: [ticketId], references: [id])
+ cloud_storage_path String @unique
+ isPublic Boolean @default(false)
+ contentType String
+ fileName String
+ size Int
+ confirmed Boolean @default(false)
+ createdAt DateTime @default(now())
+ @@index([userId, ticketId])
+}
+model Announcement {
+ id String @id @default(uuid())
+ adminId String
+ admin User @relation(fields: [adminId], references: [id])
+ title String
+ content String
+ district String
+ type AnnouncementType
+ startDate DateTime
+ endDate DateTime
+ isDemo Boolean @default(false)
+ createdAt DateTime @default(now())
+ @@index([district, endDate])
+}
+enum BusinessStatus {
+ DRAFT
+ PENDING
+ PUBLISHED
+ CHANGES_REQUESTED
+ SUSPENDED
+}
+model Business {
+ id String @id @default(uuid())
+ userId String
+ user User @relation(fields: [userId], references: [id])
+ name String
+ category String
+ district String
+ description String?
+ workingHours Json?
+ contactInfo Json?
+ verified Boolean @default(false)
+ slug String? @unique
+ identityKey String? @unique
+ branchName String @default("Merkez")
+ status BusinessStatus @default(DRAFT)
+ serviceDistricts String[] @default([])
+ services String @default("")
+ exclusions String @default("")
+ publicAddress String @default("")
+ publicPhone String @default("")
+ website String @default("")
+ hoursText String @default("")
+ verificationContact String @default("")
+ ownershipStatement String @default("")
+ reviewMessage String @default("")
+ verificationMethod String?
+ verifiedAt DateTime?
+ submittedAt DateTime?
+ publishedAt DateTime?
+ revision Int @default(1)
+ updatedAt DateTime @default(now()) @updatedAt
+ createdAt DateTime @default(now())
+ events BusinessEvent[]
+ offers Offer[]
+ @@index([userId, createdAt])
+ @@index([status, category, id])
+ @@index([status, id])
+ @@index([serviceDistricts], type: Gin)
+}
+model BusinessEvent {
+ id String @id @default(uuid())
+ businessId String
+ business Business @relation(fields:[businessId], references:[id], onDelete:Cascade)
+ actorId String
+ action String
+ message String
+ createdAt DateTime @default(now())
+ @@index([businessId, createdAt])
+ @@index([actorId, createdAt])
+}
+enum RequestStatus {
+ DRAFT
+ OPEN
+ MATCHED
+ OFFERED
+ ACCEPTED
+ CLOSED
+ CANCELLED
+}
+enum OfferStatus {
+ PENDING
+ ACCEPTED
+ DECLINED
+ WITHDRAWN
+}
+model ServiceRequest {
+ id String @id @default(uuid())
+ userId String
+ user User @relation(fields: [userId], references: [id])
+ title String
+ description String
+ category String
+ district String
+ serviceDistricts String[] @default([])
+ budgetMin Int?
+ budgetMax Int?
+ timeline String @default("")
+ structuredDetails Json?
+ status RequestStatus @default(DRAFT)
+ matchCount Int @default(0)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @default(now()) @updatedAt
+ offers Offer[]
+ @@index([userId, createdAt])
+ @@index([status, category, id])
+ @@index([serviceDistricts], type: Gin)
+}
+model Offer {
+ id String @id @default(uuid())
+ requestId String
+ request ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+ businessId String
+ business Business @relation(fields: [businessId], references: [id])
+ price Int?
+ priceNote String @default("")
+ timeline String @default("")
+ message String
+ status OfferStatus @default(PENDING)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @default(now()) @updatedAt
+ @@unique([requestId, businessId])
+ @@index([businessId, createdAt])
+ @@index([requestId, status])
+}
+model TourismPlace {
+ id String @id @default(uuid())
+ name String
+ district String
+ descriptions Json
+ lat Float?
+ lng Float?
+ published Boolean @default(false)
+}
+model AcademyCourse {
+ id String @id @default(uuid())
+ title String
+ description String
+ published Boolean @default(false)
+}
+model ClassificationCache {
+ hash String @id
+ result Json
+ expiresAt DateTime
+ @@index([expiresAt])
+}
+model RateLimitBucket {
+ key String @id
+ count Int
+ expiresAt DateTime
+ @@index([expiresAt])
+}
