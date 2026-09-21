@@ -53,6 +53,8 @@ model User {
  announcements Announcement[]
  businesses Business[]
  serviceRequests ServiceRequest[]
+ dayPlans DayPlan[] @relation("PlanOwner")
+ assignedPlans DayPlan[] @relation("PlanAssigner")
  uploads Upload[]
  accounts Account[]
  sessions Session[]
@@ -277,6 +279,48 @@ model ClassificationCache {
  result Json
  expiresAt DateTime
  @@index([expiresAt])
+}
+enum DayPlanKind {
+ PERSONAL
+ ASSIGNED
+}
+enum PlanItemStatus {
+ PENDING
+ DONE
+ MISSED
+}
+model DayPlan {
+ id String @id @default(uuid())
+ ownerId String
+ owner User @relation("PlanOwner", fields:[ownerId], references:[id])
+ assignedById String?
+ assignedBy User? @relation("PlanAssigner", fields:[assignedById], references:[id])
+ kind DayPlanKind @default(PERSONAL)
+ title String
+ date DateTime @db.Date
+ note String @default("")
+ cancelled Boolean @default(false)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @default(now()) @updatedAt
+ items PlanItem[]
+ @@index([ownerId, date])
+ @@index([assignedById, date])
+}
+model PlanItem {
+ id String @id @default(uuid())
+ planId String
+ plan DayPlan @relation(fields:[planId], references:[id], onDelete: Cascade)
+ order Int @default(0)
+ title String
+ description String @default("")
+ district String @default("")
+ location String @default("")
+ targetTime String @default("")
+ points Int @default(10)
+ status PlanItemStatus @default(PENDING)
+ completedAt DateTime?
+ createdAt DateTime @default(now())
+ @@index([planId])
 }
 model RateLimitBucket {
  key String @id
